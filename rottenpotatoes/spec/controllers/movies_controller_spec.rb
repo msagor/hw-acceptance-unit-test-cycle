@@ -11,25 +11,31 @@ DatabaseCleaner.clean
 
 RSpec.describe MoviesController, type: :controller do
     
-    movie_1 = Movie.create(title: 'movie_1', director: 'director1')
-    movie_2 = Movie.create(title: 'movie_2', director: 'director1')
-    movie_3 = Movie.create(title: 'movie_3', director: 'director2')
-    movie_4 = Movie.create(title: 'movie_4')
-    describe "searches movies with same director" do
-        it "finds movies with same director" do
-            get :moviesByDirectors, id: movie_1.id
-            expect(assigns(:movies)).to eq [movie_1, movie_2]
+    
+    describe "#index" do
+        it "view all the movies" do
+            movie1 = Movie.create(title: 'movie1', director: 'director1', rating:'G', release_date: '2021-00-01')
+            movie2 = Movie.create(title: 'movie2', director: 'director2', rating:'R', release_date: '2021-00-02')
+            get :index
+            expect(assigns(:movies)).to eq [movie1, movie2]
         end
-        it "finds only this movie" do
-            get :moviesByDirectors, id: movie_3.id
-            expect(assigns(:movie)).to eq movie_3
-        end
-        it "has no director information" do
-            get :moviesByDirectors, id: movie_4.id
-            expect(flash[:notice]).to eq "'movie_4' has no director info."
-            expect(response).to redirect_to movies_path
-        end
-            
     end
+
+    describe "#view" do
+        it "view movie info" do
+            movie0 = Movie.create(title: 'movie0', director: 'director0', rating:'G', release_date: '2021-01-01')
+            get :show, id: movie0.id
+            expect(response).to render_template :show
+        end
+    end
+
+    describe "#new" do
+        it "creating new movie" do
+            get :new
+            expect(response).to render_template :new
+        end
+    end
+    
+
         
 end
