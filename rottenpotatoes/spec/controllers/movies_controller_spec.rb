@@ -79,7 +79,33 @@ RSpec.describe MoviesController, type: :controller do
         end
     end
     
-    
-
+    describe "searches movies with same director" do
+        it "finds movies with same director" do
+            movie_1 = Movie.create(title: 'movie_1', director: 'director1')
+            movie_2 = Movie.create(title: 'movie_2', director: 'director1')
+            movie_3 = Movie.create(title: 'movie_3', director: 'director2')
+            movie_4 = Movie.create(title: 'movie_4')
+            get :moviesByDirectors, id: movie_1.id
+            expect(assigns(:movies)).to eq [movie_1, movie_2]
+        end
+        it "finds only this movie" do
+            movie_1 = Movie.create(title: 'movie_1', director: 'director1')
+            movie_2 = Movie.create(title: 'movie_2', director: 'director1')
+            movie_3 = Movie.create(title: 'movie_3', director: 'director2')
+            movie_4 = Movie.create(title: 'movie_4')
+            get :moviesByDirectors, id: movie_3.id
+            expect(assigns(:movie)).to eq movie_3
+        end
+        it "has no director information" do
+            movie_1 = Movie.create(title: 'movie_1', director: 'director1')
+            movie_2 = Movie.create(title: 'movie_2', director: 'director1')
+            movie_3 = Movie.create(title: 'movie_3', director: 'director2')
+            movie_4 = Movie.create(title: 'movie_4')
+            get :moviesByDirectors, id: movie_4.id
+            expect(flash[:notice]).to eq "'movie_4' has no director info."
+            expect(response).to redirect_to movies_path
+        end
+            
+    end
         
 end
