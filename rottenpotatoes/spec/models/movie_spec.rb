@@ -14,8 +14,8 @@ RSpec.describe Movie, type: :model do
         movie_1 = Movie.create(title: 'movie_1', director: 'director1')
         movie_2 = Movie.create(title: 'movie_2', director: 'director1')
         movie_3 = Movie.create(title: 'movie_3', director: 'director2')
-        expect(movie_1.others_by_same_director('director1')) == [movie_1, movie_2]
-        expect(movie_1.others_by_same_director('director1')) != [movie_1, movie_2, movie_3]
+        expect(movie_1.sameDirector('director1')) == [movie_1, movie_2]
+        expect(movie_1.sameDirector('director1')) != [movie_1, movie_2, movie_3]
     end
         
 end

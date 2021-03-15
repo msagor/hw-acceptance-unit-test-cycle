@@ -1,5 +1,8 @@
 class Movie < ActiveRecord::Base
-    def others_by_same_director(director)
+    def self.all_ratings
+    %w(G PG PG-13 NC-17 R)
+    end
+    def sameDirector(director)
         Movie.where(director: director)
     end
 end
